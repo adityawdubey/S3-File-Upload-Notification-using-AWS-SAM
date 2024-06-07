@@ -1,0 +1,71 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  EmailSubscriptionEndpoint:
+    Type: String
+    Description: Email address for subscription
+
+  S3BucketName:
+    Type: String
+    Description: Name of the S3 bucket
+
+Resources:
+  S3NotificationSNSTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: S3FileUploadNotificationTopic
+      TopicName: s3-file-upload-notification-topic
+      Subscription:
+        - Endpoint: !Ref EmailSubscriptionEndpoint
+          Protocol: email
+          
+  S3NotificationQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: s3-notification-queue 
+      DelaySeconds: 0
+      MaximumMessageSize: 262144 
+      MessageRetentionPeriod: 345600
+      VisibilityTimeout: 30
+      ReceiveMessageWaitTimeSeconds: 0
+
+  FileUploadDestinationBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref S3BucketName
+
+  S3FileUploadNotificationProcessor:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: handler.lambda_handler
+      Runtime: python3.12
+      CodeUri: lambda/S3FileUploadNotificationProcessor/
+      MemorySize: 256
+      Timeout: 30
+      Environment:
+        Variables:
+          SNS_TOPIC_ARN: !Ref S3NotificationSNSTopic
+          SQS_QUEUE_URL: !GetAtt S3NotificationQueue.QueueUrl
+      Policies:
+        - S3CrudPolicy:
+            BucketName: !Ref S3BucketName
+        - SQSSendMessagePolicy:
+            QueueName: !GetAtt S3NotificationQueue.QueueName
+        - Statement:
+            - Effect: Allow
+              Action: sns:Publish
+              Resource: !Ref S3NotificationSNSTopic
+      Events:
+        S3Event:
+          Type: S3
+          Properties:
+            Bucket: !Ref FileUploadDestinationBucket   
+            Events: s3:ObjectCreated:*
+
+  MySnsSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      Protocol: email
+      TopicArn: !Ref S3NotificationSNSTopic
+      Endpoint: !Ref EmailSubscriptionEndpoint
