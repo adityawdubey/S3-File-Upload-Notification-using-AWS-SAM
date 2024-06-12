@@ -1,0 +1,11 @@
+[
+    {
+      "ParameterKey": "EmailSubscriptionEndpoint",
+      "ParameterValue": "your_email@gmail.com"
+    },
+    {
+      "ParameterKey": "S3BucketName",
+      "ParameterValue": "your-bucket-name"
+    }
+]
+  
