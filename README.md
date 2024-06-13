@@ -64,10 +64,32 @@ Run the deployment script located in scripts/deploy.sh
 
 This should correctly package your Lambda functions, update the SAM template, and deploy your stack with the specified parameters.
 
+## Overcomming Challenges
+
+### Specify SAM template parameters using parameters.json
+
+One challenge faced during the deployment process was that the AWS SAM CLI does not accept a JSON file for parameters like CloudFormation does. To work around this limitation, jq is used in the deployment script to convert the parameters from a parameters.json file into a format that the AWS SAM CLI can understand.
+
+The SAM CLI requires parameters to be passed as a string in the format ParameterKey=key,ParameterValue=value. Using jq, we can transform the JSON structure of the parameters file into this required format.
+
+Here’s how jq is utilized in the deployment script:
+```
+# Convert parameters file to SAM parameter overrides format
+PARAMETER_OVERRIDES=$(jq -r '[ .[] | "ParameterKey=\(.ParameterKey),ParameterValue=\(.ParameterValue)" ] | join(" ")' "$PARAMETERS_FILE")
+```
+This command reads the JSON file specified by PARAMETERS_FILE and processes each element to create a string in the required format. The final result is a single string with all parameters properly formatted for the SAM CLI, allowing seamless deployment.
+
+
 ## Usage
 
 Once deployed, any file uploaded to the specified S3 bucket will trigger the Lambda function. The Lambda function processes the file and sends a notification via SNS.
 
+## References
+
+- https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html
+- https://github.com/aws/aws-sam-cli/issues/2054
+- https://docs.aws.amazon.com/lambda/latest/dg/foundation-iac.html
+- https://docs.aws.amazon.com/prescriptive-guidance/latest/choose-iac-tool/aws-sam.html
 
 
 
