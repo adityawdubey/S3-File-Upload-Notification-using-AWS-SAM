@@ -56,6 +56,12 @@ Ensure the dev-parameters.json file is updated with your specific configurations
 
 ### Running the deployment Script
 
+Make the script Executable
+
+```
+chmod +x ././scripts/deploy.sh
+```
+
 Run the deployment script located in scripts/deploy.sh
 
 ```
