@@ -41,8 +41,8 @@ The architecture consists of the following components:
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/s3-file-upload-notification-system.git
-cd s3-file-upload-notification-system
+git clone https://github.com/adityawdubey/S3-File-Upload-Notification-using-AWS-SAM.git
+cd S3-File-Upload-Notification-using-AWS-SAM
 ```
 
 ### Configure AWS CLI
