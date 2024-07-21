@@ -15,7 +15,7 @@ To implement the project step by step using the AWS Management Console, you can 
 
 The architecture consists of the following components:
 - **S3 Bucket:** The designated storage location for uploaded files.
-- **Lambda Function:** The heart of the system, automatically triggered by S3 events (file uploads), it processes the uploaded file and initiates notifications.
+- **Lambda Function:** It allows snippets of code to execute in response to triggers caused by activity from other AWS resources such as an AWS CloudWatch alarm, changes in a NoSQL table as DynamoDB, an upload event in an S3 bucket, etc.
 - **Amazon SNS (Simple Notification Service):** Used to send notifications to subscribers via various channels (email, SMS, etc.).
 - **Amazon CloudWatch:** Provides logging and monitoring of the Lambda function's execution, ensuring observability and troubleshooting capabilities.
 
