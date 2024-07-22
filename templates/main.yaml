@@ -35,12 +35,12 @@ Resources:
     Properties:
       BucketName: !Ref S3BucketName
 
-  S3FileUploadNotificationProcessor:
+  s3_event_handler:
     Type: AWS::Serverless::Function
     Properties:
       Handler: handler.lambda_handler
       Runtime: python3.12
-      CodeUri: lambda/S3FileUploadNotificationProcessor/
+      CodeUri: lambda/s3_event_handler/
       MemorySize: 256
       Timeout: 30
       Environment:
