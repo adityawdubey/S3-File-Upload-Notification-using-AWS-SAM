@@ -1,7 +1,7 @@
 # S3 File Upload Notification System using AWS Serverless Application Model 
 
 This project is designed to provide a notification system for file uploads to an S3 bucket using AWS Lambda and other AWS services. When a file is uploaded to the specified S3 bucket, the system triggers a Lambda function which processes the file and sends notifications accordingly. 
-To implement the project step by step using the AWS Management Console, you can follow this project design narrative in my blog website: [https://adityadubey.cloud/s3-file-upload-notification-system](https://adityadubey.cloud/s3-file-upload-notification-system).
+To implement the project step by step using the AWS Management Console, you can follow this project design narrative in my blog website: [https://adityadubey.cloud/s3-file-upload-notification-system](https://adityadubey.tech/s3-file-upload-notification-system).
 
 ## Table of Contents
 
